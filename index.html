@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <meta charset="utf-8">
+        <meta name="viewport"
+              content="withh=device-withh,initial-scale=1.0,minimum-scale=1.0">
+        <title>もももも</title>
+    </head>
+
+    <body>
+        <h1 class="title is-5">簡易拠点体力計算機 <span class="subtitle is-6">～永遠のβ版</span></h1>
+        <p class="subtitle is-8"><span
+                  style="font-size:6px;">適宜コピペやスクショしてご利用ください。小数第2位まで有効です。拠点体力は千の位(億換算小数第5位)を四捨五入しています。</span></p>
+        <style>
+            .table.is-borderless td,
+            .table.is-borderless th {
+                border: 0;
+                vertical-align: middle;
+            }
+
+        </style>
+        <table class="table is-borderless">
+            <tbody>
+                <form id="form1">
+                    <tr>
+                        <th>拠点名</th>
+                        <td><input class="input"
+                                   type="text"
+                                   name="target"
+                                   placeholder="〇〇商会"></td>
+                    </tr>
+                    <tr>
+                        <th>損失体力(%)</th>
+                        <td><input class="input"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   name="loss"
+                                   placeholder="1.23"/></td>
+                    </tr>
+                    <tr style="text-align: center">
+                        <td colspan="2">
+                            <p>--------------------------</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>番付1(万)</th>
+                        <td><input class="input"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   name="damage1"
+                                   placeholder="12345.67"></td>
+                    </tr>
+                    <tr>
+                        <th>番付2(万)</th>
+                        <td><input class="input"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   name="damage2"
+                                   placeholder="12345.67"></td>
+                    </tr>
+                    <tr>
+                        <th>番付3(万)</th>
+                        <td><input class="input"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   name="damage3"
+                                   placeholder="12345.67"></td>
+                    </tr>
+                    <tr>
+                        <th>番付4(万)</th>
+                        <td><input class="input"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   name="damage4"
+                                   placeholder="12345.67"></td>
+                    </tr>
+                    <tr>
+                        <th>番付5(万)</th>
+                        <td><input class="input"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   name="damage5"
+                                   placeholder="12345.67"></td>
+                    </tr>
+                    <tr>
+                        <th>番付6(万)</th>
+                        <td><input class="input"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   name="damage6"
+                                   placeholder="12345.67"></td>
+                    </tr>
+                    <tr>
+                        <th>番付7(万)</th>
+                        <td><input class="input"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   name="damage7"
+                                   placeholder="12345.67"></td>
+                    </tr>
+                    <tr>
+                        <th>番付8(万)</th>
+                        <td><input class="input"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   name="damage8"
+                                   placeholder="12345.67"></td>
+                    </tr>
+                    <tr>
+                        <th>番付9(万)</th>
+                        <td><input class="input"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   name="damage9"
+                                   placeholder="12345.67"></td>
+                    </tr>
+                    <tr>
+                        <th>番付10(万)</th>
+                        <td><input class="input"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   name="damage10"
+                                   placeholder="12345.67"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="columns">
+                                <div class="column">
+                                    <button class="button is-fullwidth  is-primary"
+                                            type="button"
+                                           onclick="calc(loss.value);">拠点体力を計算</button>
+                                </div>
+                                <div class="column">
+                                    <input class="button is-fullwidth is-light"
+                                           type="reset"
+                                           value="入力をクリア">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>拠点体力(億)</th>
+                        <td><input id="targetStrength"
+                                   class="input"
+                                   type="number"
+                                   step="0.01"
+                                   readonly=""></td>
+                    </tr>
+                </form>
+                <form id="form2">
+                    <tr>
+                        <td colspan="2">
+                            <div class="columns">
+                                <div class="column">
+                                    <button class="button is-fullwidth  is-primary"
+                                            type="button"
+                                           onclick="atdSummary(form1.target.value, targetStrength.value, targetStrengthSummary.value);">拠点体力を追加</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="vertical-align:top">
+                            拠点体力まとめ</th>
+                        <td>
+                            <textarea id="targetStrengthSummary"
+                                      class="textarea"
+                                      readonly=""></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="flex-item">
+                                <input type="reset"
+                                       class="button is-fullwidth is-light"
+                                       value="まとめをクリア">
+                            </div>
+                        </td>
+                    </tr>
+
+                </form>
+
+            </tbody>
+        </table>
+
+        <script>
+            function calc(loss) {
+                let totalDamages = 0;
+                var formdata = document.getElementById("form1");
+                for (var i = 0; i < formdata.elements.length; i++) {
+                    if (i > 0 && i < 12) {
+                        if (isNumber(formdata.elements[i].value) == false) {
+                            alert('損失体力並びに番付1～10にはマイナスの数値および不正な数値を設定しないでください。');
+                            return '';
+                        }
+                        if (i != 1) {
+                            totalDamages += Number(formdata.elements[i].value);
+                        }
+                    }
+                }
+                if (totalDamages != 0 and Number(loss) > 0 ) {
+                    const target = document.getElementById('targetStrength').value = Math.round((totalDamages / Number(loss) * 100 / 10000) * 10000) / 10000;
+                }
+            }
+            function atdSummary(target, targetStrength, targetStrengthSummary) {
+                if (targetStrength.length != 0) {
+                    if (targetStrengthSummary.length == 0) {
+                        const input = document.getElementById('targetStrengthSummary').value = target + '\t' + targetStrength + ' 億';
+                    } else {
+                        const input = document.getElementById('targetStrengthSummary').value = targetStrengthSummary + '\n' + target + '\t' + targetStrength + ' 億';
+                    }
+                    if ($('#targetStrengthSummary').outerHeight() > document.getElementById('targetStrengthSummary').scrollHeight) {
+                        $('#targetStrengthSummary').height(6);
+                    }
+                    while ($('#targetStrengthSummary').outerHeight() < document.getElementById('targetStrengthSummary').scrollHeight) {
+                        $('#targetStrengthSummary').height($('#targetStrengthSummary').height() + 2);
+                    }
+                }
+            }
+            function clearForm(form) {
+                for (var i = 0; i < form.elements.length; ++i) {
+                    clearElement(form.elements[i]);
+                }
+            }
+            function isNumber(numVal) {
+                var pattern = /^[+]?([1-9]\d*|0)(\.\d+)?$/;
+                if (pattern.test(numVal) == false && numVal.length > 0) {
+                    return false;
+                }
+            }
+        </script>
+    </body>
+
+</html>
